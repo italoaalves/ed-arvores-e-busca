@@ -19,6 +19,8 @@ if __name__ == "__main__":
     print("A new empty tree has been successfully created.")
 
     while True:
+        system('cls' if name == 'nt' else 'clear')
+        print("AVL Trees")
         print('''
         (1) Insert movie
         (2) Search movie by id

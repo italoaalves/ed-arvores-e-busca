@@ -3,134 +3,180 @@ from model.node import Node
 
 class AVLTree():
     def __init__(self):
-        self.node = None
-        self.__height = -1
-        self.balance = 0
+        self.__node = None
+
+    @property
+    def node(self):
+        return self.__node
 
     @property
     def height(self):
-        if self.node:
-            return self.__height
+        if self.__node:
+            return self.__node.height
         else:
-            return - 1
+            return -1
 
-    def insert(self, data):
-        tree = self.node
+    @node.setter
+    def node(self, new_node):
+        self.__node = new_node
 
-        new_node = Node(data)
+    def insert(self, key, data=None):
+        self.node = self._insert(self.node, key, data)
 
-        if tree == None:
-            self.node = new_node
-            self.node.left = Node()
-            self.node.right = Node()
+    def _insert(self, node: Node, key, data=None) -> Node:
+        if not node:
+            return Node(key, data, balance=0)
 
-        elif data.id < tree.data.id:
-            self.node.left.insert(data)
-
-        elif data.id > tree.data.id:
-            self.node.right.insert(data)
-
+        if key < node.key:
+            left_sub_root = self._insert(node.left, key, data)
+            node.left = left_sub_root
+            left_sub_root.parent = node
+        elif key > node.key:
+            right_sub_root = self._insert(node.right, key, data)
+            node.right = right_sub_root
+            right_sub_root.parent = node
         else:
-            raise("ID [" + str(data.id) + "] already exists in tree.")
+            raise Exception("Movie already exists in tree")
 
-        self.rebalance()
+        node.balance = self._get_height(
+            node.left) - self._get_height(node.right)
+        node.height = max(self._get_height(node.left),
+                          self._get_height(node.right)) + 1
 
-    def rotate_left(self):
-        A = self.node
-        B = self.node.right.node
-        T = B.left.node
-        self.node = B
-        B.left.node = A
-        A.right.node = T
+        return self.rebalance(node)
 
-    def rotate_right(self):
-        A = self.node
-        B = self.node.left.node
-        T = B.right.node
-        self.node = B
-        B.right.node = A
-        A.left.node = T
-
-    def rebalance(self):
-        self.update_heights(False)
-        self.update_balances(False)
-        while self.balance < -1 or self.balance > 1:
-            if self.balance > 1:
-                if self.node.left.balance < 0:
-                    self.node.left.rotate_left()
-                    self.update_heights()
-                    self.update_balances()
-                self.rotate_right()
-                self.update_heights()
-                self.update_balances()
-
-            if self.balance < -1:
-                if self.node.right.balance > 0:
-                    self.node.right.rotate_right()
-                    self.update_heights()
-                    self.update_balances()
-                self.rotate_left()
-                self.update_heights()
-                self.update_balances()
-
-    def update_balances(self, recurse=True):
-        if not self.node == None:
-            if recurse:
-                if self.node.left != None:
-                    self.node.left.update_balances()
-                if self.node.right != None:
-                    self.node.right.update_balances()
-
-            self.balance = self.node.left.height - self.node.right.height
+    def rebalance(self, root: Node) -> Node:
+        if root.balance == 2:
+            if root.left.balance < 0:
+                root.left = self.rotate_left(root.left)
+                return self.rotate_right(root)
+            else:
+                return self.rotate_right(root)
+        elif root.balance == -2:
+            if root.right.balance > 0:
+                root.right = self.rotate_right(root.right)
+                return self.rotate_left(root)
+            else:
+                return self.rotate_left(root)
         else:
-            self.balance = 0
+            return root
 
-    def update_heights(self, recurse=True):
-        if not self.node == None:
-            if recurse:
-                if self.node.left != None:
-                    self.node.left.update_heights()
-                if self.node.right != None:
-                    self.node.right.update_heights()
+    def rotate_right(self, node: Node) -> Node:
+        pointer = node.left
+        tmp = pointer.right
 
-            self.__height = max(self.node.left.height,
-                                self.node.right.height) + 1
+        pointer.right = node
+        pointer.parent = node.parent
+        node.parent = pointer
+
+        node.left = tmp
+        if tmp:
+            tmp.parent = node
+
+        if pointer.parent:
+            if pointer.parent.left == node:
+                pointer.parent.left = pointer
+            else:
+                pointer.parent.right = pointer
+
+        node.height = max(self._get_height(node.left),
+                          self._get_height(node.right)) + 1
+        node.balance = self._get_height(
+            node.left) - self._get_height(node.right)
+        pointer.height = max(self._get_height(pointer.left),
+                             self._get_height(pointer.right)) + 1
+        pointer.balance = self._get_height(
+            pointer.left) - self._get_height(pointer.right)
+
+        return pointer
+
+    def rotate_left(self, node: Node) -> Node:
+        pointer = node.right
+        tmp = pointer.left
+
+        pointer.left = node
+        pointer.parent = node.parent
+        node.parent = pointer
+
+        node.right = tmp
+        if tmp:
+            tmp.parent = node
+
+        if pointer.parent:
+            if pointer.parent.left == node:
+                pointer.parent.left = pointer
+            else:
+                pointer.parent.right = pointer
+
+        node.height = max(self._get_height(node.left),
+                          self._get_height(node.right)) + 1
+        node.balance = self._get_height(
+            node.left) - self._get_height(node.right)
+
+        pointer.height = max(self._get_height(pointer.left),
+                             self._get_height(pointer.right)) + 1
+        pointer.balance = self._get_height(
+            pointer.left) - self._get_height(pointer.right)
+
+        return pointer
+
+    def _get_height(self, node: Node) -> int:
+        if not node:
+            return 0
         else:
-            self.__height = -1
+            return node.height
 
-    def check_balanced(self):
-        if self == None or self.node == None:
-            return True
+    def _search(self, current, key):
+        if not current:
+            return
 
-        self.update_heights()
-        self.update_balances()
-        return ((abs(self.balance) < 2) and self.node.left.check_balanced() and self.node.right.check_balanced())
+        if current.data.id == key:
+            return current.data
 
-    def is_leaf(self):
-        return (self.height == 0)
+        if current.data.id < key:
+            return self._search(current.right, key)
+        else:
+            return self._search(current.left, key)
 
-    def show(self, level=0, pref=''):
-        self.update_heights()
-        self.update_balances()
+    def search(self, id):
+        movie = self._search(self.node, id)
 
-        if(self.node != None):
-            print('-' * level * 2, pref, self.node.data.id, "[" + str(self.height) + ":" + str(
-                self.balance) + "]", 'L' if self.is_leaf() else ' ')
-            if self.node.left != None:
-                self.node.left.show(level + 1, '<')
-            if self.node.left != None:
-                self.node.right.show(level + 1, '>')
+        if movie:
+            return movie
+        else:
+            raise Exception("Movie not found")
 
-    def _search_in_order(self, current, year, movies):
+    def _search_by_year(self, current, year, movies):
         if current != None:
-            self._search_in_order(current.node.left, year, movies)
-            if current.node.data.year == year:
-                movies.append(current.node.data)
-            self._search_in_order(current.node.right, year, movies)
+            self._search_by_year(current.left, year, movies)
+            if current.data.year == year:
+                movies.append(current.data)
+            self._search_by_year(current.right, year, movies)
 
     def search_by_year(self, year):
         movies = []
 
-        self._search_in_order(self.node, year, movies)
+        self._search_by_year(self.node, year, movies)
 
         return movies
+
+    def _list_by_name(self, current, movies):
+        if current != None:
+            self.in_order(current.left, movies)
+            movies.append(current.data.name)
+            self.in_order(current.right, movies)
+
+    def list_by_name(self):
+        movies = []
+        self.in_order(self.node, movies)
+        movies.sort()
+
+        print("Every movie in tree:")
+        for movie in movies:
+            print(movie)
+
+    def show(self):
+        if self.__node:
+            self.node.display()
+        else:
+            raise Exception("Empty tree")

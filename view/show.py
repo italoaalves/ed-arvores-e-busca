@@ -1,5 +1,7 @@
 def show_view(tree):
     print("Show\n")
-
-    tree.show()
+    try:
+        tree.show()
+    except Exception as e:
+        print(e)
     input("ENTER to continue")
