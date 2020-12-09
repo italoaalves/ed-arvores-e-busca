@@ -31,7 +31,7 @@ class AVLTree():
         else:
             raise("ID [" + str(data.id) + "] already exists in tree.")
 
-        # self.rebalance()
+        self.rebalance()
 
     def rotate_left(self):
        
@@ -52,3 +52,27 @@ class AVLTree():
         self.node = B
         B.right.node = A
         A.left.node = T
+
+    def rebalance(self):
+       
+        self.update_heights(False)
+        self.update_balances(False)
+        
+        while self.balance < -1 or self.balance > 1:
+            if self.balance > 1:
+                if self.node.left.balance < 0:
+                    self.node.left.rotate_left()  
+                    self.update_heights()
+                    self.update_balances()
+                self.rotate_right()
+                self.update_heights()
+                self.update_balances()
+
+            if self.balance < -1:
+                if self.node.right.balance > 0:
+                    self.node.right.rotate_right()  
+                    self.update_heights()
+                    self.update_balances()
+                self.rotate_left()
+                self.update_heights()
+                self.update_balances()
