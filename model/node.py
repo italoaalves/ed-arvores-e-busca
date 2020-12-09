@@ -4,9 +4,8 @@ class Node:
         self.data = data
         self.left = None
         self.right = None
-        self.parent = None  # Also track parent of this node for easier rotations
-        self.balance = balance  # Balance factor of current node
-        # Height of tree rooted at this node (this is important to update bf's after re-balancing)
+        self.parent = None
+        self.balance = balance
         self.height = 1
 
     def display(self):
