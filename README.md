@@ -36,10 +36,10 @@ A qualquer momento um usuário poderá:
 - Informar a altura da árvore.
   Deverá existir um menu interativo, para que o usuário escolha as
   opções:
-  (1.) Inserir filme
-  (2.) Buscar filme pelo id
-  (3.) Buscar filmes pelo ano
-  (4.) Listar filmes em ordem alfabética
-  (5.) Altura da árvore
-  (6.) Exibir a árvore
-  (7.) Sair do programa.
+  1. Inserir filme
+  2. Buscar filme pelo id
+  3. Buscar filmes pelo ano
+  4. Listar filmes em ordem alfabética
+  5. Altura da árvore
+  6. Exibir a árvore
+  7. Sair do programa.
