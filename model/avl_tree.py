@@ -57,7 +57,7 @@ class AVLTree():
        
         self.update_heights(False)
         self.update_balances(False)
-        
+
         while self.balance < -1 or self.balance > 1:
             if self.balance > 1:
                 if self.node.left.balance < 0:
@@ -76,3 +76,15 @@ class AVLTree():
                 self.rotate_left()
                 self.update_heights()
                 self.update_balances()
+
+    def update_balances(self, recurse=True):
+        if not self.node == None:
+            if recurse:
+                if self.node.left != None:
+                    self.node.left.update_balances()
+                if self.node.right != None:
+                    self.node.right.update_balances()
+
+            self.balance = self.node.left.height - self.node.right.height
+        else:
+            self.balance = 0
