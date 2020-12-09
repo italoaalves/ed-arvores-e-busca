@@ -23,18 +23,18 @@ class AVLTree():
     def insert(self, key, data=None):
         self.node = self._insert(self.node, key, data)
 
-    def _insert(self, node: Node, key, data=None) -> Node:
+    def _insert(self, node, key, data=None):
         if not node:
             return Node(key, data, balance=0)
 
         if key < node.key:
-            left_sub_root = self._insert(node.left, key, data)
-            node.left = left_sub_root
-            left_sub_root.parent = node
+            left_sub_node = self._insert(node.left, key, data)
+            node.left = left_sub_node
+            left_sub_node.parent = node
         elif key > node.key:
-            right_sub_root = self._insert(node.right, key, data)
-            node.right = right_sub_root
-            right_sub_root.parent = node
+            right_sub_node = self._insert(node.right, key, data)
+            node.right = right_sub_node
+            right_sub_node.parent = node
         else:
             raise Exception("Movie already exists in tree")
 
@@ -45,33 +45,33 @@ class AVLTree():
 
         return self.rebalance(node)
 
-    def rebalance(self, root: Node) -> Node:
-        if root.balance == 2:
-            if root.left.balance < 0:
-                root.left = self.rotate_left(root.left)
-                return self.rotate_right(root)
+    def rebalance(self, node):
+        if node.balance == 2:
+            if node.left.balance < 0:
+                node.left = self.rotate_left(node.left)
+                return self.rotate_right(node)
             else:
-                return self.rotate_right(root)
-        elif root.balance == -2:
-            if root.right.balance > 0:
-                root.right = self.rotate_right(root.right)
-                return self.rotate_left(root)
+                return self.rotate_right(node)
+        elif node.balance == -2:
+            if node.right.balance > 0:
+                node.right = self.rotate_right(node.right)
+                return self.rotate_left(node)
             else:
-                return self.rotate_left(root)
+                return self.rotate_left(node)
         else:
-            return root
+            return node
 
-    def rotate_right(self, node: Node) -> Node:
+    def rotate_right(self, node):
         pointer = node.left
-        tmp = pointer.right
+        aux = pointer.right
 
         pointer.right = node
         pointer.parent = node.parent
         node.parent = pointer
 
-        node.left = tmp
-        if tmp:
-            tmp.parent = node
+        node.left = aux
+        if aux:
+            aux.parent = node
 
         if pointer.parent:
             if pointer.parent.left == node:
@@ -90,17 +90,17 @@ class AVLTree():
 
         return pointer
 
-    def rotate_left(self, node: Node) -> Node:
+    def rotate_left(self, node):
         pointer = node.right
-        tmp = pointer.left
+        aux = pointer.left
 
         pointer.left = node
         pointer.parent = node.parent
         node.parent = pointer
 
-        node.right = tmp
-        if tmp:
-            tmp.parent = node
+        node.right = aux
+        if aux:
+            aux.parent = node
 
         if pointer.parent:
             if pointer.parent.left == node:
@@ -162,13 +162,13 @@ class AVLTree():
 
     def _list_by_name(self, current, movies):
         if current != None:
-            self.in_order(current.left, movies)
+            self._list_by_name(current.left, movies)
             movies.append(current.data.name)
-            self.in_order(current.right, movies)
+            self._list_by_name(current.right, movies)
 
     def list_by_name(self):
         movies = []
-        self.in_order(self.node, movies)
+        self._list_by_name(self.node, movies)
         movies.sort()
 
         print("Every movie in tree:")
