@@ -88,3 +88,16 @@ class AVLTree():
             self.balance = self.node.left.height - self.node.right.height
         else:
             self.balance = 0
+
+    def update_heights(self, recurse=True):
+        if not self.node == None:
+            if recurse:
+                if self.node.left != None:
+                    self.node.left.update_heights()
+                if self.node.right != None:
+                    self.node.right.update_heights()
+
+            self.height = max(self.node.left.height,
+                              self.node.right.height) + 1
+        else:
+            self.height = -1
