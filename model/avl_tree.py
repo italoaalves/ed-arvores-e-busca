@@ -171,9 +171,7 @@ class AVLTree():
         self._list_by_name(self.node, movies)
         movies.sort()
 
-        print("Every movie in tree:")
-        for movie in movies:
-            print(movie)
+        return movies
 
     def show(self):
         if self.__node:
