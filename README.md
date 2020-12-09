@@ -5,8 +5,8 @@ Repositório do Segundo Projeto da disciplina de Estruturas de Dados. O objetivo
 ## Como executar este projeto
 
 ```bash
-git clone https://github.com/italoaalves/projeto-ed/
-cd projeto-ed
+git clone https://github.com/italoaalves/projeto-ed-2/
+cd projeto-ed-2
 
 virtualenv env
 source ./env/bin/activate # No windows ./env/Scripts/activate
