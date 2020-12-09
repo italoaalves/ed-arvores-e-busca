@@ -28,13 +28,13 @@ class AVLTree():
             return Node(key, data, balance=0)
 
         if key < node.key:
-            left_sub_node = self._insert(node.left, key, data)
-            node.left = left_sub_node
-            left_sub_node.parent = node
+            left_node = self._insert(node.left, key, data)
+            node.left = left_node
+            left_node.parent = node
         elif key > node.key:
-            right_sub_node = self._insert(node.right, key, data)
-            node.right = right_sub_node
-            right_sub_node.parent = node
+            right_node = self._insert(node.right, key, data)
+            node.right = right_node
+            right_node.parent = node
         else:
             raise Exception("Movie already exists in tree")
 
