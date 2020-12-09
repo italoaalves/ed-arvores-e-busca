@@ -8,11 +8,6 @@ Repositório do Segundo Projeto da disciplina de Estruturas de Dados. O objetivo
 git clone https://github.com/italoaalves/projeto-ed-2/
 cd projeto-ed-2
 
-virtualenv env
-source ./env/bin/activate # No windows ./env/Scripts/activate
-
-pip install -r requirements.txt
-
 python app.py
 ```
 
@@ -36,10 +31,10 @@ A qualquer momento um usuário poderá:
 - Informar a altura da árvore.
   Deverá existir um menu interativo, para que o usuário escolha as
   opções:
-  1. Inserir filme
-  2. Buscar filme pelo id
-  3. Buscar filmes pelo ano
-  4. Listar filmes em ordem alfabética
-  5. Altura da árvore
-  6. Exibir a árvore
-  7. Sair do programa.
+  1 Inserir filme
+  2 Buscar filme pelo id
+  3 Buscar filmes pelo ano
+  4 Listar filmes em ordem alfabética
+  5 Altura da árvore
+  6 Exibir a árvore
+  7 Sair do programa.
