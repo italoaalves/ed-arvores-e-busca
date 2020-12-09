@@ -34,30 +34,24 @@ class AVLTree():
         self.rebalance()
 
     def rotate_left(self):
-       
         A = self.node
         B = self.node.right.node
         T = B.left.node
-
         self.node = B
         B.left.node = A
         A.right.node = T
 
     def rotate_right(self):
-       
         A = self.node
         B = self.node.left.node
         T = B.right.node
-
         self.node = B
         B.right.node = A
         A.left.node = T
 
-    def rebalance(self):
-       
+    def rebalance(self): 
         self.update_heights(False)
         self.update_balances(False)
-
         while self.balance < -1 or self.balance > 1:
             if self.balance > 1:
                 if self.node.left.balance < 0:
@@ -108,4 +102,16 @@ class AVLTree():
 
         self.update_heights()
         self.update_balances()
-        return ((abs(self.balance) < 2) and self.node.left.check_balanced() and self.node.right.check_balanced())
+        return ((abs(self.balance) < 2) and self.node.left.check_balanced() and self.node.right.check_balanced()) 
+    
+     def show(self, level=0, pref=''):
+        self.update_heights()
+        self.update_balances()
+
+        if(self.node != None):
+            print('-' * level * 2, pref, self.node.key, "[" + str(self.height) + ":" + str(
+                self.balance) + "]", 'L' if self.is_leaf() else ' ')
+            if self.node.left != None:
+                self.node.left.show(level + 1, '<')
+            if self.node.left != None:
+                self.node.right.show(level + 1, '>')
