@@ -101,3 +101,11 @@ class AVLTree():
                               self.node.right.height) + 1
         else:
             self.height = -1
+
+    def check_balanced(self):
+        if self == None or self.node == None:
+            return True
+
+        self.update_heights()
+        self.update_balances()
+        return ((abs(self.balance) < 2) and self.node.left.check_balanced() and self.node.right.check_balanced())
