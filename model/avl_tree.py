@@ -42,3 +42,13 @@ class AVLTree():
         self.node = B
         B.left.node = A
         A.right.node = T
+
+    def rotate_right(self):
+       
+        A = self.node
+        B = self.node.left.node
+        T = B.right.node
+
+        self.node = B
+        B.right.node = A
+        A.left.node = T
