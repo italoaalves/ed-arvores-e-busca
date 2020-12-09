@@ -10,10 +10,7 @@ def insert_view(tree):
 
     new_movie = Movie(movie_id, movie_name, movie_year)
 
-    try:
-        tree.insert(new_movie)
-        print("Movie successfully inserted")
-    except Exception as e:
-        print(e)
+    tree.insert(new_movie)
+    print("Movie successfully inserted")
 
     input("ENTER to continue")

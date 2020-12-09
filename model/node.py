@@ -3,6 +3,8 @@ class Node:
         self.__data = data
         self.__left = None
         self.__right = None
+        self.__height = -1
+        self.balance = 0
 
     @property
     def data(self):

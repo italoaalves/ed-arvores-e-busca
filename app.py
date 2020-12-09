@@ -15,13 +15,8 @@ options = [insert_view, search_view, search_year_view,
 # debugging
 if __name__ == "__main__":
 
-    try:
-        tree = AVLTree()
-        print("A new empty tree has been successfully created.")
-        trash = input("Press ENTER to start")
-    except:
-        print("Something got wrong. Try again.")
-        quit()
+    tree = AVLTree()
+    print("A new empty tree has been successfully created.")
 
     while True:
         print('''
