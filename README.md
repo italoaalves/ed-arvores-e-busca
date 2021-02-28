@@ -1,4 +1,4 @@
-# projeto-ed-2
+# Árvore AVL
 
 Repositório do Segundo Projeto da disciplina de Estruturas de Dados. O objetivo é implementar uma Árvore AVL.
 
